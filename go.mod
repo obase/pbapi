@@ -8,7 +8,7 @@ require (
 	github.com/obase/center v1.10.2
 	github.com/obase/conf v1.10.2
 	github.com/obase/log v1.10.2
-	github.com/obase/redis.v2 v0.0.2
+	github.com/obase/redis.v2 v0.0.3
 	google.golang.org/grpc v1.29.1
 	google.golang.org/protobuf v1.24.0
 )
