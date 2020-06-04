@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"github.com/obase/redis"
+	"github.com/obase/redis.v2"
 	"math"
 )
 

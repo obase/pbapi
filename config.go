@@ -112,7 +112,6 @@ func LoadConfig() (ret *Config) {
 		ret.Cache.MaxIdles, ok = conf.ElemInt(ck, "maxIdles")
 		ret.Cache.TestIdleTimeout, ok = conf.ElemDuration(ck, "testIdleTimeout")
 		ret.Cache.ErrExceMaxConns, ok = conf.ElemBool(ck, "errExceMaxConns")
-		ret.Cache.Keyfix, ok = conf.ElemString(ck, "keyfix")
 		ret.Cache.Select, ok = conf.ElemInt(ck, "select")
 		ret.Cache.Cluster, ok = conf.ElemBool(ck, "cluster")
 		ret.Cache.Proxyips, ok = conf.ElemStringMap(ck, "proxyips")

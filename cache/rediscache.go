@@ -3,7 +3,7 @@ package cache
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
-	"github.com/obase/redis"
+	"github.com/obase/redis.v2"
 	"sync"
 )
 
