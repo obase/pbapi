@@ -42,10 +42,10 @@ func (c *redisCache) Cache(seconds int64, f gin.HandlerFunc) gin.HandlerFunc {
 		buf.Reset()
 		ctx.Request.Body = DupCacheRequestBody(ctx.Request.Body, buf)
 		key := ckey(ctx.Request, buf)
-		bs, ok, err := redis.Bytes(rdb.Do("GET", key))
-		if ok && err == nil {
+		bs, _, _ := redis.Bytes(rdb.Do("GET", key))
+		if len(bs) > 0 {
 			var rsp Response
-			if _, err = rsp.Unmarshal(bs); err == nil {
+			if _, err := rsp.Unmarshal(bs); err == nil {
 				write(ctx.Writer, &rsp)
 				return
 			}
@@ -57,8 +57,7 @@ func (c *redisCache) Cache(seconds int64, f gin.HandlerFunc) gin.HandlerFunc {
 		f(ctx)
 		// 只会缓存state位于200~400之间的结果
 		if status := ctx.Writer.Status(); status >= c.Config.MinStatusCode && status <= c.Config.MaxStatusCode {
-			bs, err = read(ctx.Writer.(*CacheResponseWriter)).Marshal(nil)
-			if err == nil {
+			if bs, err := read(ctx.Writer.(*CacheResponseWriter)).Marshal(nil); err == nil {
 				rdb.Do("SETEX", key, seconds, bs)
 			}
 		}
