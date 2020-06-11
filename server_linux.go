@@ -94,13 +94,13 @@ func graceShutdownOrRestart(grpcServer *grpc.Server, grpcListener net.Listener, 
 			}
 			if grpcListener != nil && httpListener != nil {
 				flag = GRACE_ALL
-				files = []*os.File{httpx.GetListenerFile(grpcListener), httpx.GetListenerFile(httpListener)}
+				files = []*os.File{GetListenerFile(grpcListener), GetListenerFile(httpListener)}
 			} else if grpcListener != nil {
 				flag = GRACE_GRPC
-				files = []*os.File{httpx.GetListenerFile(grpcListener)}
+				files = []*os.File{GetListenerFile(grpcListener)}
 			} else if httpListener != nil {
 				flag = GRACE_HTTP
-				files = []*os.File{httpx.GetListenerFile(httpListener)}
+				files = []*os.File{GetListenerFile(httpListener)}
 			} else {
 				flag = GRACE_NONE
 			}
