@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/md5"
 	"github.com/gin-gonic/gin"
+	"github.com/obase/kit"
 	"net/http"
 	"strings"
 )
@@ -25,8 +26,8 @@ func New(config *Config) Cache {
 
 func ckey(r *http.Request, rbuf *bytes.Buffer) string {
 
-	buffer := buffpool.Get().(*bytes.Buffer)
-	defer buffpool.Put(buffer)
+	buffer := kit.GetBytesBuffer()
+	defer kit.PutBytesBuffer(buffer)
 
 	buffer.Reset()
 	buffer.WriteString(r.Method)

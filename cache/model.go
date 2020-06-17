@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"io"
-	"sync"
 )
 
 const (
@@ -56,8 +55,3 @@ func (w *CacheResponseWriter) Write(data []byte) (int, error) {
 	return w.ResponseWriter.Write(data)
 }
 
-var buffpool = sync.Pool{
-	New: func() interface{} {
-		return bytes.NewBuffer(make([]byte, 0, BufferBlockSize)) // 默认10K
-	},
-}

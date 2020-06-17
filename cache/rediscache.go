@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/obase/kit"
 	"github.com/obase/redis.v2"
 	"sync"
 )
@@ -36,8 +36,8 @@ func (c *redisCache) Cache(seconds int64, f gin.HandlerFunc) gin.HandlerFunc {
 	// 返回包装句柄
 	rdb := c.Redis
 	return func(ctx *gin.Context) {
-		buf := buffpool.Get().(*bytes.Buffer)
-		defer buffpool.Put(buf)
+		buf := kit.GetBytesBuffer()
+		defer kit.PutBytesBuffer(buf)
 
 		buf.Reset()
 		ctx.Request.Body = DupCacheRequestBody(ctx.Request.Body, buf)

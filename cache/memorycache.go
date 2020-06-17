@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/obase/kit"
 	"sync"
 	"time"
 )
@@ -32,8 +32,8 @@ func (c *memoryCache) Cache(seconds int64, f gin.HandlerFunc) gin.HandlerFunc {
 	}
 
 	return func(ctx *gin.Context) {
-		buf := buffpool.Get().(*bytes.Buffer)
-		defer buffpool.Put(buf)
+		buf := kit.GetBytesBuffer()
+		defer kit.PutBytesBuffer(buf)
 
 		buf.Reset()
 		ctx.Request.Body = DupCacheRequestBody(ctx.Request.Body, buf)
