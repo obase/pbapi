@@ -41,9 +41,9 @@ func registerServiceHttp(httpServer gin.IRouter, conf *Config) {
 	}
 
 	if err := center.Register(regs, chks); err == nil {
-		log.Info(nil, "register service success, %v", *regs)
+		log.Infof("register service success, %v", *regs)
 	} else if err != center.ErrInvalidClient {
-		log.Error(nil, "register service error, %v, %v", *regs, err)
+		log.Errorf("register service error, %v, %v", *regs, err)
 	}
 }
 
@@ -74,9 +74,9 @@ func registerServiceGrpc(grpcServer *grpc.Server, conf *Config) {
 	}
 
 	if err := center.Register(regs, chks); err == nil {
-		log.Info(nil, "register service success, %v", *regs)
+		log.Infof("register service success, %v", *regs)
 	} else if err != center.ErrInvalidClient {
-		log.Error(nil, "register service error, %v, %v", *regs, err)
+		log.Errorf("register service error, %v, %v", *regs, err)
 	}
 }
 
