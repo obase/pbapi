@@ -1,11 +1,10 @@
 package access
 
 import (
-	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/obase/kit"
 	"github.com/obase/log"
 	"strconv"
-	"sync"
 	"time"
 )
 
@@ -14,11 +13,6 @@ const SPACE = ' '
 func NewHandlerFunc(logger *log.Logger) gin.HandlerFunc {
 	if logger == nil {
 		return nil
-	}
-	var pool = &sync.Pool{
-		New: func() interface{} {
-			return new(bytes.Buffer)
-		},
 	}
 	/*
 		- 请求来源
@@ -39,19 +33,19 @@ func NewHandlerFunc(logger *log.Logger) gin.HandlerFunc {
 		end := time.Now().UnixNano()
 		used := (end - start) / 1000000
 
-		buf := pool.Get().(*bytes.Buffer)
+		buf := kit.GetStringBuffer()
 		buf.WriteString(source)
-		buf.WriteRune(SPACE)
+		buf.WriteByte(SPACE)
 		buf.WriteString(method)
-		buf.WriteRune(SPACE)
+		buf.WriteByte(SPACE)
 		buf.WriteString(path)
-		buf.WriteRune(SPACE)
+		buf.WriteByte(SPACE)
 		buf.WriteString(query)
-		buf.WriteRune(SPACE)
+		buf.WriteByte(SPACE)
 		buf.WriteString(strconv.Itoa(status))
-		buf.WriteRune(SPACE)
+		buf.WriteByte(SPACE)
 		buf.WriteString(strconv.FormatInt(used, 10))
-		logger.Info(ctx, buf.String())
-		pool.Put(buf)
+		logger.Info(buf.String())
+		kit.PutStringBuffer(buf)
 	}
 }
