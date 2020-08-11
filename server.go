@@ -269,14 +269,14 @@ func (server *Server) ServeWith(config *Config) error {
 		// 创建监听端口
 		grpcListener, err = graceListenGrpc(config.GrpcHost, config.GrpcPort)
 		if err != nil {
-			log.Error(nil, "grpc server listen error: %v", err)
+			log.Errorf("grpc server listen error: %v", err)
 			log.Flush()
 			return err
 		}
 		// 启动grpc服务
 		grpcfunc = func() {
 			if err = grpcServer.Serve(grpcListener); err != nil {
-				log.Error(nil, "grpc server serve error: %v", err)
+				log.Errorf("grpc server serve error: %v", err)
 				log.Flush()
 				os.Exit(1)
 			}
@@ -367,13 +367,13 @@ func (server *Server) ServeWith(config *Config) error {
 		httpCache = cache.New(config.Cache)
 		accesslog, err = access.NewLogger(runctx, config.Accesslog)
 		if err != nil {
-			log.Error(nil, "create access logger error: %v", err)
+			log.Errorf("create access logger error: %v", err)
 			return err
 		}
 		// 核心转换生成ServeMux
 		engine, err := server.compileRouterEngine(config, httpCache, access.NewHandlerFunc(accesslog))
 		if err != nil {
-			log.Error(context.Background(), "http server compile error: %v", err)
+			log.Errorf("http server compile error: %v", err)
 			return err
 		}
 		// 最后才注册,避免前面的安全机制影响
@@ -387,14 +387,14 @@ func (server *Server) ServeWith(config *Config) error {
 		// 创建监听端口
 		httpListener, err = graceListenHttp(config.HttpHost, config.HttpPort, config.HttpKeepAlive)
 		if err != nil {
-			log.Error(context.Background(), "http server listen error: %v", err)
+			log.Errorf("http server listen error: %v", err)
 			return err
 		}
 		// 支持TLS,或http2.0
 		if config.HttpCertFile != "" {
 			httpfunc = func() {
 				if err := httpServer.ServeTLS(httpListener, config.HttpCertFile, config.HttpKeyFile); err != nil {
-					log.Error(nil, "http server serve error: %v", err)
+					log.Errorf("http server serve error: %v", err)
 					log.Flush()
 					os.Exit(1)
 				}
@@ -402,7 +402,7 @@ func (server *Server) ServeWith(config *Config) error {
 		} else {
 			httpfunc = func() {
 				if err := httpServer.Serve(httpListener); err != nil {
-					log.Error(nil, "http server serve error: %v", err)
+					log.Errorf("http server serve error: %v", err)
 					log.Flush()
 					os.Exit(1)
 				}
