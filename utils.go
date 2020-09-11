@@ -186,7 +186,7 @@ func CreateHandlerFunc4Wbsk(tag string, upgrader *websocket.Upgrader, fn func(co
 
 		conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 		if err != nil {
-			log.Error(c, "upgrade connection: %v", tag, err)
+			log.Errorf("upgrade connection: %v, %v", tag, err)
 			return
 		}
 		for {
