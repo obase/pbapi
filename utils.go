@@ -156,7 +156,7 @@ func CreateHandlerFunc4Http(tag string, fn func(context.Context, []byte) (interf
 					Tag:  tag,
 				})
 			} else {
-				log.Error(c, "%s execute service: %v", tag, err)
+				log.Errorf("%s execute service: %v", tag, err)
 				if ersp, ok := err.(*Response); ok {
 					wdata, _ = json.Marshal(ersp)
 				} else {
@@ -168,7 +168,7 @@ func CreateHandlerFunc4Http(tag string, fn func(context.Context, []byte) (interf
 				}
 			}
 		} else {
-			log.Error(c, "%s reading request: %v", tag, err)
+			log.Errorf("%s reading request: %v", tag, err)
 			wdata, _ = json.Marshal(&Response{
 				Code: READING_REQUEST_ERROR,
 				Msg:  err.Error(),
@@ -199,7 +199,7 @@ func CreateHandlerFunc4Wbsk(tag string, upgrader *websocket.Upgrader, fn func(co
 			)
 			mtype, rdata, err = conn.ReadMessage()
 			if err != nil {
-				log.Error(c, "%s reading message: %v", tag, err)
+				log.Errorf("%s reading message: %v", tag, err)
 				return
 			}
 			rsp, err = fn(c, rdata)
@@ -210,7 +210,7 @@ func CreateHandlerFunc4Wbsk(tag string, upgrader *websocket.Upgrader, fn func(co
 					Tag:  tag,
 				})
 			} else {
-				log.Error(c, "%s execute service: %v", tag, err)
+				log.Errorf("%s execute service: %v", tag, err)
 				if ersp, ok := err.(*Response); ok {
 					wdata, _ = json.Marshal(ersp)
 				} else {
@@ -223,7 +223,7 @@ func CreateHandlerFunc4Wbsk(tag string, upgrader *websocket.Upgrader, fn func(co
 			}
 			err = conn.WriteMessage(mtype, wdata)
 			if err != nil {
-				log.Error(c, "%s writing message: %v", tag, err)
+				log.Errorf("%s writing message: %v", tag, err)
 				return
 			}
 		}
